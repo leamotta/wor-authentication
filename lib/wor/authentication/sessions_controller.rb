@@ -46,6 +46,49 @@ module Wor
         Wor::Authentication::TokenManager.new(token_key).encode(payload)
       end
 
+      def new_token_expiration_date
+        Wor::Authentication.expiration_days.days.from_now.to_i
+      end
+
+      def token_maximum_useful_date
+        Wor::Authentication.maximum_useful_days.days.from_now.to_i
+      end
+
+      def token_renew_id
+        SecureRandom.hex(32)
+      end
+
+      def entity_custom_validation_renew_value(entity)
+        entity_custom_validation_value(entity)
+      end
+
+      def entity_custom_validation_invalidate_all_value(_entity)
+        nil
+      end
+
+      ##########################################################################################
+      #                   DEFAULT METHOD IMPLEMENTATIONS, USER SHOULD CHANGE                   #
+      ##########################################################################################
+      def authenticate_entity(params)
+        entity = User.find_by(email: params[:email])
+        return nil unless entity.present? && entity.valid_password?(params[:password])
+        entity
+      end
+
+      def entity_payload(entity)
+        { id: entity.id }
+      end
+
+      def entity_custom_validation_value(entity)
+        SecureRandom.hex(32).tap do |random_value|
+          begin
+            entity.update!(entity_custom_validation: random_value)
+          rescue
+            Rails.logger.info('User does not have a entity_custom_validation attribute')
+          end
+        end
+      end
+
       private
 
       def access_token_object(token_key, payload, renew_id)

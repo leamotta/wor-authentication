@@ -1,0 +1,20 @@
+# Missing in README
+
+- What does sign in require
+
+# Mejoras
+
+- Mensajes de las excepciones FALTAN COMPLETAR LOS STRINGS
+- Default rescues DONE
+
+# Errors
+
+- Renew token esta al pedo, hay que agregarselo al usuario
+
+# Defaults
+
+User: {
+  email,
+  password,
+  entity_custom_validation
+}

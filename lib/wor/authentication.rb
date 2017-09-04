@@ -1,6 +1,6 @@
+require_relative 'authentication/exceptions'
 require_relative 'authentication/controller'
 require_relative 'authentication/decoded_token'
-require_relative 'authentication/exceptions'
 require_relative 'authentication/sessions_controller'
 require_relative 'authentication/token_manager'
 require_relative 'authentication/version'
@@ -18,14 +18,14 @@ module Wor
 
     def self.expiration_days=(expiration_days)
       unless expiration_days.is_a? Integer
-        raise Wor::Authentication::Exceptions::InvalidExpirationDaysError
+        raise Wor::Authentication::Exceptions::InvalidExpirationDays
       end
       @config[:expiration_days] = expiration_days
     end
 
     def self.maximum_useful_days=(maximum_useful_days)
       unless maximum_useful_days.is_a? Integer
-        raise Wor::Authentication::Exceptions::InvalidMaximumUsefulDaysError
+        raise Wor::Authentication::Exceptions::InvalidMaximumUsefulDays
       end
       @config[:maximum_useful_days] = maximum_useful_days
     end
